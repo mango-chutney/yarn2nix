@@ -44,7 +44,9 @@ let
   # TODO: copy manpages & docs as well
   # type: String -> ListOf { name: String, drv : Drv } -> Drv
   linkNodeDeps = {name, version}: packageDeps:
-    pkgs.runCommand ("${name}-${version}-node_modules") {} ''
+    pkgs.runCommand ("${name}-${version}-node_modules") {
+      buildInputs = lib.singleton pkgs.nix-prefetch-scripts;
+    } ''
       mkdir -p $out/.bin
       ${lib.concatMapStringsSep "\n"
         (dep: ''
